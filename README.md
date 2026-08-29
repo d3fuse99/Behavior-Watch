@@ -120,6 +120,3 @@ When a threat threshold is breached (Score ≥ 100):
 This software is developed strictly for security research, defense simulation, and educational purposes. Ensure you run this tool in a test environment or virtual machine when simulating malicious binaries.
 
 ---
-
-## 📝 License
-Distributed under the [MIT License](LICENSE
