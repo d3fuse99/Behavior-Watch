@@ -11,7 +11,8 @@
 
 ## 📸 Preview
 
-![Dashboard Preview](preview.png)
+![Uploading изображение.png…]()
+
 
 ---
 
