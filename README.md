@@ -11,8 +11,7 @@
 
 ## 📸 Preview
 
-![Uploading изображение.png…]()
-
+<img width="710" height="380" alt="изображение" src="https://github.com/user-attachments/assets/64d9e023-7834-4a3e-8052-60f02728e3a0" />
 
 ---
 
@@ -54,3 +53,73 @@
 ### 2. Install Dependencies
 ```bash
 pip install psutil
+```
+
+### 3. Run Engine
+
+**Windows (Administrator PowerShell / CMD):**
+```powershell
+python behavior_watch.py
+```
+
+**Linux (Root):**
+```bash
+sudo python3 behavior_watch.py
+```
+
+---
+
+## ⚙️ Configuration (`config.json`)
+
+All weights, polling intervals, safelists, and malicious hash lists can be customized without restarting the core script:
+
+```json
+{
+    "threat_threshold": 100,
+    "decay_rate": 5,
+    "loop_interval": 1.5,
+    "points_temp_dir": 40,
+    "points_suspicious_path": 35,
+    "points_established_net": 25,
+    "points_sustained_cpu": 20,
+    "points_suspicious_parent": 50,
+    "points_known_bad_hash": 100,
+    "points_registry_persistence": 40,
+    "points_ransomware_behavior": 100,
+    "points_memory_signature": 90
+}
+```
+
+---
+
+## 📁 Quarantine & Forensics
+
+When a threat threshold is breached (Score ≥ 100):
+1. Target process and its children are immediately **suspended**.
+2. Executable binary is duplicated into `./EDR_Quarantine/<filename>_<timestamp>.vir` using XOR encryption.
+3. Original executable is removed from disk and registry persistence keys are cleaned up.
+4. Process tree is **terminated**.
+5. Structured event is appended to `behavior_audit.jsonl`:
+
+```json
+{
+  "timestamp": "2026-08-29T12:00:00.123456",
+  "pid": 4776,
+  "name": "document.pdf.exe",
+  "path": "C:\\Users\\User\\AppData\\Local\\Temp\\document.pdf.exe",
+  "threat_score": 100,
+  "triggered_heuristics": ["TEMP_DIR_EXEC_PATH", "EVASION_PATH_PATTERN", "EXTERNAL_TCP_ESTABLISHED"],
+  "quarantine_path": "EDR_Quarantine\\document.pdf_1780231648.vir",
+  "action_taken": "TERMINATED_AND_QUARANTINED"
+}
+```
+
+---
+
+## ⚠️ Disclaimer
+This software is developed strictly for security research, defense simulation, and educational purposes. Ensure you run this tool in a test environment or virtual machine when simulating malicious binaries.
+
+---
+
+## 📝 License
+Distributed under the [MIT License](LICENSE
